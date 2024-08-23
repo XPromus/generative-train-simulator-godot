@@ -1,0 +1,53 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtrune7qrvahy"]
+
+[ext_resource type="Script" path="res://Scripts/train_demo.gd" id="1_7miwp"]
+[ext_resource type="PackedScene" uid="uid://cbe4j1luj1u4g" path="res://Scenes/train_interior.tscn" id="3_4yrks"]
+
+[sub_resource type="Curve3D" id="Curve3D_r6ov0"]
+bake_interval = 10.0
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0.701356, 0, 0.11225, 0, 0, 0, 0, 0, 0, 1.55013, 0, 0.389613, 0, 0, 0, 0, 0, 0, 2.3495, 0, 1.70951, 0, 0, 0, 0, 0, 0, 3.53423, 0, 2.69181, 0, 0, 0, 0, 0, 0, 4.72275, 0, 2.6489, 0, 0, 0, 0, 0, 0, 5.6696, 0, 1.8972, 0, 0, 0, 0, 0, 0, 6.0599, 0, 0.733524, 0, 0, 0, 0, 0, 0, 5.85812, 0, -0.380318, 0, 0, 0, 0, 0, 0, 5.57595, 0, -1.44766, 0, 0, 0, 0, 0, 0, 5.31928, 0, -2.14406, 0, 0, 0, 0, 0, 0, 4.82758, 0, -3.00574, 0, 0, 0, 0, 0, 0, 3.4658, 0, -3.50874, 0, 0, 0, 0, 0, 0, 2.26475, 0, -3.75736, 0, 0, 0, 0, 0, 0, 1.08699, 0, -3.61014, 0, 0, 0, 0, 0, 0, 0.190159, 0, -3.47193, 0, 0, 0, 0, 0, 0, -1.63782, 0, -3.2511, 0, 0, 0, 0, 0, 0, -2.90146, 0, -2.60088, 0, 0, 0, 0, 0, 0, -3.39219, 0, -1.30044, 0, 0, 0, 0, 0, 0, -2.87692, 0, -0.404854, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.701356, 0, 0.11225),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 21
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_78a18"]
+albedo_color = Color(0.0987284, 0.0987284, 0.0987284, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_yeawu"]
+
+[node name="TrainDemo" type="Node3D" node_paths=PackedStringArray("path", "pathFollow", "pathFollowTracer")]
+script = ExtResource("1_7miwp")
+path = NodePath("Track")
+pathFollow = NodePath("Track/Follow")
+pathFollowTracer = NodePath("Track/Tracer")
+
+[node name="Track" type="Path3D" parent="."]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0, 0)
+curve = SubResource("Curve3D_r6ov0")
+metadata/_edit_lock_ = true
+
+[node name="Follow" type="PathFollow3D" parent="Track"]
+transform = Transform3D(0.99998, 0, 0, 0, 1.00001, 0, 0, 0, 0.99998, 0.701356, 0, 0.11225)
+rotation_mode = 0
+cubic_interp = false
+tilt_enabled = false
+
+[node name="Tracer" type="PathFollow3D" parent="Track"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.725732, 0, 0.120216)
+progress = 0.0256446
+rotation_mode = 0
+cubic_interp = false
+tilt_enabled = false
+
+[node name="TrainInterior" parent="." instance=ExtResource("3_4yrks")]
+transform = Transform3D(0.999997, 0, 0, 0, 1.00001, 0, 0, 0, 0.999997, 0, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.694859, 0.719146, 0, -0.719146, 0.694859, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+transform = Transform3D(150, 0, 0, 0, 10, 0, 0, 0, 100, 31.3889, 0, -12.2068)
+material_override = SubResource("StandardMaterial3D_78a18")
+mesh = SubResource("PlaneMesh_yeawu")
